@@ -4,7 +4,7 @@ import Header from "./components/Header.jsx";
 import Shop from "./components/Shop.jsx";
 import Product from "./components/Product.jsx";
 import { DUMMY_PRODUCTS } from "./dummy-products.js";
-import CartContext from "./store/ShoppingCartContext.jsx";
+import { CartContext } from "./store/ShoppingCartContext.jsx";
 
 function App() {
   const [shoppingCart, setShoppingCart] = useState({
@@ -69,7 +69,8 @@ function App() {
 
   return (
     <>
-      <CartContext>
+      {/* In Older React versions (< 19) we use CartContext.Provider instead of just CartContext */}
+      <CartContext value={{items: []}}>
         <Header
           cart={shoppingCart}
           onUpdateCartItemQuantity={handleUpdateCartItemQuantity}
