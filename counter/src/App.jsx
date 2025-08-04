@@ -1,7 +1,7 @@
 import "./App.css"
-import Counter from './components/Counter'
+import Counters from './components/Counters'
 export default function App() {
   return (
-    <Counter />
+    <Counters />
   )
 }

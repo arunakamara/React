@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 export default function Counter() {
-  const [counter, setCounter] = useState({ value: 2 });
+  const [counter, setCounter] = useState({ value: 0 });
 
   
   const { value: count } = counter;
 
     const countValue = count === 0 ? 'Zero' : count;
 
-  let counterStyle = "size-8 rounded-sm w-fit p-3 text-center leading-[0.5] ";
+  let counterStyle = "size-8  rounded-sm w-fit p-3 text-center leading-[0.5] ";
   counterStyle += count === 0 ? "bg-yellow-400" : "bg-blue-300";
 
   function handleIncrement(){
