@@ -1,7 +1,9 @@
-import { useState } from "react";
-import "./App.css";
+import { useState, useContext } from "react";
 import Counters from "./components/Counters";
 import NavBar from "./components/NavBar";
+import { CountersContext } from "./store/CountersContext";
+import "./App.css";
+
 export default function App() {
   const [counters, setCounters] = useState([
     { id: 1, value: 0 },
@@ -10,6 +12,7 @@ export default function App() {
     { id: 4, value: 0 },
   ]);
 
+ 
   function handleIncrement(counterId) {
     setCounters((prevCounters) => {
       let counterToUpdate = prevCounters.find((c) => c.id === counterId);
@@ -39,15 +42,18 @@ export default function App() {
       return updatedCounters;
     });
   }
+
+  const ctxValue = {
+    counters: counters,
+    incrementCounter: handleIncrement,
+    deleteCounter: handleDelete,
+    resetCounter: handleReset,
+  };
+
   return (
-    <div>
-      <NavBar counters={counters} />
-      <Counters
-        counters={counters}
-        onReset={handleReset}
-        onDelete={handleDelete}
-        onIncrement={handleIncrement}
-      />
-    </div>
+    <CountersContext value={ctxValue}>
+      <NavBar />
+      <Counters/>
+    </CountersContext>
   );
 }
