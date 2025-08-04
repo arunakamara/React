@@ -23,12 +23,20 @@ export default function Counters() {
     });
   }
 
+  function handleDelete(counterId){
+    setCounters(prevCounters => {
+        const updatedCounters = prevCounters.filter(c => c.id !== counterId)
+        return updatedCounters;
+    })
+  }
+
   return (
     <div>
       {counters.map((counter) => (
         <Counter
           key={counter.id}
           counter={counter}
+          onDelete={() => handleDelete(counter.id)}
           onIncrement={() => handleIncrement(counter.id)}
         />
       ))}
