@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+body {
+    margin: 5px;
+    padding: 5px;
+}
+
+
+
+table td {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 3px;
+}
+
+th {
+    padding: 8px;
+}
+
+button {
+    cursor: pointer;
+}
