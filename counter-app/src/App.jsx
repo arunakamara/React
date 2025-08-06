@@ -1,25 +1,39 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 export function counterReducer(state, action) {
+  if (action.type === "INCREMENT") {
+    return { ...state, count: state.count + 1 };
+  }
+
+  if (action.type === "DECREMENT") {
+    return { ...state, count: state.count > 0 ? state.count - 1 : 0 };
+  }
+  if (action.type === "RESET") {
+    return { ...state, count: 0 };
+  }
   return state;
 }
 
 function App() {
-  // const [counterState, counterDispatch] = useReducer(counterReducer, {
-  //   count: 0,
-  // })
+  const [counterState, counterDispatch] = useReducer(counterReducer, {
+    count: 0,
+  });
 
-  const [counter, setCounter] = useState({ count: 0})
-
-  function handleIncrement(){
-    setCounter((prevCounter) => ({...prevCounter, count: prevCounter.count + 1}))
+  function handleIncrement() {
+    counterDispatch({
+      type: "INCREMENT",
+    });
   }
 
-  function handleDecrement(){
-    setCounter(prevCounter => ({...prevCounter, count: prevCounter.count > 0 ? prevCounter.count - 1 : 0}))
+  function handleDecrement() {
+    counterDispatch({
+      type: "DECREMENT",
+    });
   }
 
   function handleReset() {
-    setCounter(prevCounter => ({...prevCounter, count: 0}))
+    counterDispatch({
+      type: "RESET",
+    });
   }
 
   return (
@@ -30,7 +44,7 @@ function App() {
         <button onClick={handleDecrement}>Decrement</button>
         <button onClick={handleReset}>Reset</button>
       </p>
-      <p id="counter">{counter.count}</p>
+      <p id="counter">{counterState.count}</p>
     </div>
   );
 }
