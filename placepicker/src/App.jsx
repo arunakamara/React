@@ -24,6 +24,8 @@ function App() {
   // }, []);
 
   useEffect(() => {
+    // To handle async function which returns value after the component has rendered
+    
     navigator.geolocation.getCurrentPosition((position) => {
       const sortedPlaces = sortPlacesByDistance(
         AVAILABLE_PLACES,
