@@ -5,20 +5,26 @@ export default function App() {
   const [rating, setRating] = useState({
     likes: 0,
     dislikes: 0,
+    totalRating: 0,
   });
 
   function handleLike() {
-    setRating((prevRating) => ({ ...prevRating, likes: prevRating.likes + 1 }));
+    setRating((prevRating) => ({
+      ...prevRating,
+      likes: prevRating.likes + 1,
+      totalRating: prevRating.totalRating + 1,
+    }));
   }
 
   function handleDislike() {
     setRating((prevRating) => ({
       ...prevRating,
       dislikes: prevRating.dislikes + 1,
+      totalRating: prevRating.totalRating + 1,
     }));
   }
-  
-  const { likes, dislikes } = rating;
+
+  const { likes, dislikes, totalRating } = rating;
 
   return (
     <>
@@ -29,17 +35,16 @@ export default function App() {
             onClick={handleLike}
             className="flex gap-2 mx-2 bg-stone-700 text-stone-200 p-3 rounded-lg hover:bg-stone-500"
           >
-            Likes <FaThumbsUp className="text-blue-400 mt-1" />
-            ({likes})
+            Likes <FaThumbsUp className="text-blue-400 mt-1" />({likes})
           </button>
           <button
             onClick={handleDislike}
             className="flex gap-2 mx-2 bg-stone-700 text-stone-200 p-3 rounded-lg hover:bg-stone-500"
           >
-            Dislike <FaThumbsDown className="text-blue-400 mt-1 " />
-            ({dislikes})
+            Dislike <FaThumbsDown className="text-blue-400 mt-1 " />({dislikes})
           </button>
         </menu>
+        <div className="m-3 mb-5">Total Rating: {totalRating}</div>
       </div>
     </>
   );
