@@ -7,7 +7,7 @@ import logoImg from "./assets/logo.png";
 import AvailablePlaces from "./components/AvailablePlaces.jsx";
 import { fetchUserPlaces, updateUserPlaces } from "./http.js";
 import ErrorPage from "./components/Error.jsx";
-import {useFetch} from './hooks/UseFetch';
+import { useFetch } from "./hooks/UseFetch";
 
 function App() {
   const selectedPlace = useRef();
@@ -16,7 +16,12 @@ function App() {
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const { isFetching, fetchedData: userPlaces, error } = useFetch(fetchUserPlaces, []);
+  const {
+    isFetching,
+    fetchedData: userPlaces,
+    setFetchedData: setUserPlaces,
+    error,
+  } = useFetch(fetchUserPlaces, []);
 
   function handleStartRemovePlace(place) {
     setModalIsOpen(true);
@@ -27,56 +32,56 @@ function App() {
     setModalIsOpen(false);
   }
 
-  // async function handleSelectPlace(selectedPlace) {
-  //   // Pessimistic Updating
-  //   // await updateUserPlaces([selectedPlace, ...userPlaces]);
+  async function handleSelectPlace(selectedPlace) {
+    // Pessimistic Updating
+    // await updateUserPlaces([selectedPlace, ...userPlaces]);
 
-  //   setUserPlaces((prevPickedPlaces) => {
-  //     if (!prevPickedPlaces) {
-  //       prevPickedPlaces = [];
-  //     }
-  //     if (prevPickedPlaces.some((place) => place.id === selectedPlace.id)) {
-  //       return prevPickedPlaces;
-  //     }
+    setUserPlaces((prevPickedPlaces) => {
+      if (!prevPickedPlaces) {
+        prevPickedPlaces = [];
+      }
+      if (prevPickedPlaces.some((place) => place.id === selectedPlace.id)) {
+        return prevPickedPlaces;
+      }
 
-  //     // Optimistic Updating
-  //     return [selectedPlace, ...prevPickedPlaces];
-  //   });
-  //   try {
-  //     await updateUserPlaces([selectedPlace, ...userPlaces]);
-  //   } catch (error) {
-  //     // Rolling back to previous state in case of error
-  //     setUserPlaces(userPlaces);
+      // Optimistic Updating
+      return [selectedPlace, ...prevPickedPlaces];
+    });
+    try {
+      await updateUserPlaces([selectedPlace, ...userPlaces]);
+    } catch (error) {
+      // Rolling back to previous state in case of error
+      setUserPlaces(userPlaces);
 
-  //     // Handling the error
-  //     setErrorUpdatingPlaces({
-  //       message: error.message || "Failed to update places.",
-  //     });
-  //   }
-  // }
+      // Handling the error
+      setErrorUpdatingPlaces({
+        message: error.message || "Failed to update places.",
+      });
+    }
+  }
 
-  // const handleRemovePlace = useCallback(
-  //   async function handleRemovePlace() {
-  //     setUserPlaces((prevPickedPlaces) =>
-  //       prevPickedPlaces.filter(
-  //         (place) => place.id !== selectedPlace.current.id
-  //       )
-  //     );
-  //     try {
-  //       await updateUserPlaces(
-  //         userPlaces.filter((place) => place.id !== selectedPlace.current.id)
-  //       );
-  //     } catch (error) {
-  //       setUserPlaces(userPlaces);
-  //       setErrorUpdatingPlaces({
-  //         message: error.message || "Failed to delete place.",
-  //       });
-  //     }
+  const handleRemovePlace = useCallback(
+    async function handleRemovePlace() {
+      setUserPlaces((prevPickedPlaces) =>
+        prevPickedPlaces.filter(
+          (place) => place.id !== selectedPlace.current.id
+        )
+      );
+      try {
+        await updateUserPlaces(
+          userPlaces.filter((place) => place.id !== selectedPlace.current.id)
+        );
+      } catch (error) {
+        setUserPlaces(userPlaces);
+        setErrorUpdatingPlaces({
+          message: error.message || "Failed to delete place.",
+        });
+      }
 
-  //     setModalIsOpen(false);
-  //   },
-  //   [userPlaces]
-  // );
+      setModalIsOpen(false);
+    },
+    [userPlaces]
+  );
 
   function handleError() {
     setErrorUpdatingPlaces(null);
@@ -97,7 +102,7 @@ function App() {
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
-          // onConfirm={handleRemovePlace}
+          onConfirm={handleRemovePlace}
         />
       </Modal>
 
@@ -111,10 +116,7 @@ function App() {
       </header>
       <main>
         {error && (
-          <ErrorPage
-            title="An error occurred!"
-            message={error.message}
-          />
+          <ErrorPage title="An error occurred!" message={error.message} />
         )}
         {!error && (
           <Places
@@ -123,13 +125,13 @@ function App() {
             places={userPlaces}
             isLoading={isFetching}
             loadingText="Fetching your places..."
-            // onSelectPlace={handleStartRemovePlace}
+            onSelectPlace={handleStartRemovePlace}
           />
         )}
 
-        <AvailablePlaces 
-        // onSelectPlace={handleSelectPlace}
-         />
+        <AvailablePlaces
+        onSelectPlace={handleSelectPlace}
+        />
       </main>
     </>
   );
