@@ -1,9 +1,28 @@
+import { useState } from "react";
 export default function Login() {
-  
-  function handleSubmit(e){
+  // const [enteredEmail, setEnteredEmail] = useState("");
+  // const [enteredPassword, setEnteredPassword] = useState("");
+
+  const [enteredInputs, setEnteredInputs] = useState({
+    email: "",
+    password: "",
+  });
+
+  function handleSubmit(e) {
     e.preventDefault();
-    console.log("Submitted")
+    console.log(
+      `Email: ${enteredInputs.email} \nPassword: ${enteredInputs.password}`
+    );
   }
+
+  function handleInputChange(identifier, value) {
+    setEnteredInputs((prevInputs) => ({
+      ...prevInputs,
+      [identifier]: value,
+    }));
+  }
+
+  
   return (
     <form onSubmit={handleSubmit}>
       <h2>Login</h2>
@@ -11,12 +30,24 @@ export default function Login() {
       <div className="control-row">
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
-          <input id="email" type="email" name="email" />
+          <input
+            id="email"
+            type="email"
+            name="email"
+            onChange={(e) => handleInputChange("email", e.target.value)}
+            value={enteredInputs.email}
+          />
         </div>
 
         <div className="control no-margin">
           <label htmlFor="password">Password</label>
-          <input id="password" type="password" name="password" />
+          <input
+            id="password"
+            type="password"
+            name="password"
+            onChange={(e) => handleInputChange("password", e.target.value)}
+            value={enteredInputs.password}
+          />
         </div>
       </div>
 
