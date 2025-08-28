@@ -40,7 +40,7 @@ export default function Login() {
           <input
             ref={email}
             id="email"
-            // type="email"
+            type="email"
             name="email"
           />
           <div className="control-error">
