@@ -1,7 +1,10 @@
-import { useActionState } from "react";
+import { useActionState, useContext } from "react";
+import { OpinionsContext } from "../store/opinions-context";
 
 export function NewOpinion() {
-  function shareOpinionAction(prevState, formData) {
+  const { addOpinion } = useContext(OpinionsContext);
+
+  async function shareOpinionAction(prevState, formData) {
     const { userName, title, body } = Object.fromEntries(formData.entries());
 
     const errors = [];
@@ -30,13 +33,7 @@ export function NewOpinion() {
 
     // Send to backend
 
-    fetch('http://localhost:3000/opinions', {
-      method: 'POST',
-      body: JSON.stringify({userName, title, body }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(res => res.json()).then((data) => console.log(data))
+    await addOpinion({ title, body, userName });
 
     return { errors: null };
   }
