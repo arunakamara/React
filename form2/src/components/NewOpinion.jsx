@@ -1,26 +1,49 @@
 import { useActionState } from "react";
 
-
 export function NewOpinion() {
+  function shareOpinionAction(prevState, formData) {
+    const { userName, title, body } = Object.fromEntries(formData.entries());
 
-  
-function shareOpinionAction(prevActionState, formData){
-  const opinionData = Object.fromEntries(formData.entries());
+    const errors = [];
+    if (title.trim().length < 5) {
+      errors.push("Title must be at least five characters long.");
+    }
 
+    if (body.trim().length < 10 || body.trim().length > 300) {
+      errors.push("Opinion must be between 10 and 300 characters long.");
+    }
 
-  // Send to backend
+    if (!userName.trim()) {
+      errors.push("Please provide your name.");
+    }
 
-  fetch('http://localhost:3000/opinions', {
-    method: 'POST',
-    body: JSON.stringify({opinionData}),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then(res => res.json()).then((data) => console.log(data))
-  
-}
+    if (errors.length > 0) {
+      return {
+        errors,
+        enteredValues: {
+          userName,
+          title,
+          body,
+        },
+      };
+    }
 
-  const [formState, formAction] = useActionState(shareOpinionAction)
+    // Send to backend
+
+    // fetch('http://localhost:3000/opinions', {
+    //   method: 'POST',
+    //   body: JSON.stringify({opinionData}),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // }).then(res => res.json()).then((data) => console.log(data))
+
+    return { errors: null };
+  }
+
+  const [formState, formAction] = useActionState(shareOpinionAction, {
+    errors: null,
+  });
 
   return (
     <div id="new-opinion">
@@ -29,18 +52,41 @@ function shareOpinionAction(prevActionState, formData){
         <div className="control-row">
           <p className="control">
             <label htmlFor="userName">Your Name</label>
-            <input type="text" id="userName" name="userName" required/>
+            <input
+              type="text"
+              id="userName"
+              name="userName"
+              defaultValue={formState.enteredValues?.userName}
+            />
           </p>
 
           <p className="control">
             <label htmlFor="title">Title</label>
-            <input type="text" id="title" name="title" required/>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              defaultValue={formState.enteredValues?.title}
+            />
           </p>
         </div>
         <p className="control">
           <label htmlFor="body">Your Opinion</label>
-          <textarea id="body" name="body" rows={5} required></textarea>
+          <textarea
+            id="body"
+            name="body"
+            rows={5}
+            defaultValue={formState.enteredValues?.body}
+          ></textarea>
         </p>
+
+        {formState.errors && (
+          <ul className="errors">
+            {formState.errors.map((error) => (
+              <li key={error}>{error}</li>
+            ))}
+          </ul>
+        )}
 
         <p className="actions">
           <button type="submit">Submit</button>
