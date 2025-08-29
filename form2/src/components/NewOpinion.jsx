@@ -30,13 +30,13 @@ export function NewOpinion() {
 
     // Send to backend
 
-    // fetch('http://localhost:3000/opinions', {
-    //   method: 'POST',
-    //   body: JSON.stringify({opinionData}),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // }).then(res => res.json()).then((data) => console.log(data))
+    fetch('http://localhost:3000/opinions', {
+      method: 'POST',
+      body: JSON.stringify({userName, title, body }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(res => res.json()).then((data) => console.log(data))
 
     return { errors: null };
   }
