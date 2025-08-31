@@ -8,7 +8,10 @@ export function NewOpinion() {
   async function shareOpinionAction(prevState, formData) {
     const { userName, title, body } = Object.fromEntries(formData.entries());
 
+    // Validations
     const errors = [];
+
+    // Check for errors
     if (title.trim().length < 5) {
       errors.push("Title must be at least five characters long.");
     }
