@@ -12,7 +12,7 @@ export default function MealItem({ meal }) {
           </p>
           <p className="meal-item-description">{meal.description}</p>
           <p className="meal-item-actions">
-            <Button>Add to Cart</Button>
+            <Button className="btn">Add to Cart</Button>
           </p>
         </div>
       </article>
