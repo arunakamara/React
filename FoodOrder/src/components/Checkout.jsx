@@ -24,6 +24,7 @@ export default function Checkout() {
     isLoading: isSending,
     error,
     sendRequest,
+    clearData,
   } = useHttp("http://localhost:3000/orders", requestConfig);
 
   const cartTotal = items.reduce(
@@ -38,6 +39,7 @@ export default function Checkout() {
   function handleFinish() {
     hideCheckout();
     clearCart();
+    clearData();
   }
 
   function handleSubmit(e) {
