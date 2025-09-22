@@ -63,7 +63,7 @@ export default function Checkout() {
       <Button type="button" onClick={handleClose} textOnly>
         Close
       </Button>
-      <Button>Submit Order</Button>
+      <Button>Submit Your Order</Button>
     </>
   );
 
