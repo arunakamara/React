@@ -1,6 +1,6 @@
-const redux = require('redux');
+const {createStore} = require('redux');
 
-const ReducerFunc = (state = {counter: 0}, action) => {
+const counterReducer = (state = {counter: 0}, action) => {
     if (action.type === 'increment'){
         return {
             ...state,
@@ -18,4 +18,7 @@ const ReducerFunc = (state = {counter: 0}, action) => {
     return state
 }
 
-const store = redux.createStore(ReducerFunc);
+const store = createStore(counterReducer);
+
+
+export default store;
