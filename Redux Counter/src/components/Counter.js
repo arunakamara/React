@@ -6,6 +6,7 @@ const Counter = () => {
   const dispatch = useDispatch();
   const counter = useSelector((state) => state.counter);
 
+  // Action for Increment
   const incrementHandler = () => {
     dispatch({ type: "increment" });
   };
