@@ -12,3 +12,11 @@ body, html {
 header {
   background-color: darkslateblue;
 }
+
+footer {
+  background-color: #1b1b23;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  
+}
